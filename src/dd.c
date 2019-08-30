@@ -775,8 +775,6 @@ print_xfer_stats (xtime_t progress_time)
   double delta_s;
   char const *bytes_per_second;
   char const *si = human_readable (w_bytes, hbuf[0], human_opts, 1, 1);
-  char const *iec = human_readable (w_bytes, hbuf[1],
-                                    human_opts | human_base_1024, 1, 1);
 
   /* Use integer arithmetic to compute the transfer rate,
      since that makes it easy to use SI abbreviations.  */
@@ -818,13 +816,9 @@ print_xfer_stats (xtime_t progress_time)
                             "%"PRIuMAX" bytes copied, %s, %s",
                             select_plural (w_bytes)),
                   w_bytes, delta_s_buf, bytes_per_second)
-       : abbreviation_lacks_prefix (iec)
-       ? fprintf (stderr,
-                  _("%"PRIuMAX" bytes (%s) copied, %s, %s"),
-                  w_bytes, si, delta_s_buf, bytes_per_second)
        : fprintf (stderr,
-                  _("%"PRIuMAX" bytes (%s, %s) copied, %s, %s"),
-                  w_bytes, si, iec, delta_s_buf, bytes_per_second));
+                  _("%s copied, %s, %s"),
+                  si, delta_s_buf, bytes_per_second));
 
   if (progress_time)
     {
